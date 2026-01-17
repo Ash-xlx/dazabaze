@@ -88,6 +88,8 @@ pub struct IssueDb {
     pub title: String,
     pub description: String,
     pub status: String,
+    #[serde(rename = "assigneeId")]
+    pub assignee_id: Option<ObjectId>,
     #[serde(rename = "parentIssueId")]
     pub parent_issue_id: Option<ObjectId>,
 }
@@ -101,6 +103,8 @@ pub struct IssueOut {
     pub title: String,
     pub description: String,
     pub status: String,
+    #[serde(rename = "assigneeId")]
+    pub assignee_id: Option<String>,
     #[serde(rename = "parentIssueId")]
     pub parent_issue_id: Option<String>,
 }
@@ -112,6 +116,8 @@ pub struct IssueIn {
     pub title: String,
     pub description: String,
     pub status: String,
+    #[serde(rename = "assigneeId")]
+    pub assignee_id: Option<String>,
     #[serde(rename = "parentIssueId")]
     pub parent_issue_id: Option<String>,
 }
@@ -161,6 +167,7 @@ impl From<IssueDb> for IssueOut {
             title: i.title,
             description: i.description,
             status: i.status,
+            assignee_id: i.assignee_id.map(|x| x.to_hex()),
             parent_issue_id: i.parent_issue_id.map(|x| x.to_hex()),
         }
     }

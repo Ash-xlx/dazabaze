@@ -23,6 +23,7 @@ export type Issue = {
   title: string
   description: string
   status: string
+  assigneeId?: string | null
   parentIssueId?: string | null
 }
 

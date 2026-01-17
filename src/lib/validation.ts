@@ -23,7 +23,8 @@ export const issueSchema = z.object({
   organizationId: z.string().min(1),
   title: z.string().min(1),
   description: z.string().min(1),
-  status: z.string().min(1),
+  status: z.enum(['todo', 'in_progress', 'in_review', 'done']),
+  assigneeId: z.string().optional().nullable(),
   parentIssueId: z.string().optional().nullable(),
 })
 export type IssueInput = z.infer<typeof issueSchema>

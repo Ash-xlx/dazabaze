@@ -1,4 +1,4 @@
-## Dazabaze — Semester project
+## IssueApp — Semester project
 
 Frontend: **Next.js (React)**  
 Backend: **Rust (Actix-Web) API server** + **MongoDB**

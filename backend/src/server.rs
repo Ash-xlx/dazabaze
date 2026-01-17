@@ -197,6 +197,7 @@ pub async fn api_server(port: u16) -> std::io::Result<()> {
             .service(api::organizations::get_by_id::organizations_get_by_id)
             .service(api::organizations::create::organizations_create)
             .service(api::organizations::add_member::organizations_add_member)
+            .service(api::organizations::members_list::organizations_members_list)
             .service(api::organizations::delete::organizations_delete)
             // Issues (list/search/get/create/update/delete)
             .service(api::issues::list::issues_list)

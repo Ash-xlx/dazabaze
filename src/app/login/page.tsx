@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import AuthShell from '@/components/AuthShell'
 import { useAuth } from '@/hooks/useAuth'
 import type { LoginInput } from '@/lib/validation'
 
@@ -28,55 +29,55 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-950 dark:bg-black dark:text-zinc-50">
-      <div className="mx-auto w-full max-w-md px-4 py-16">
-        <h1 className="text-3xl font-semibold tracking-tight">Log in</h1>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+    <AuthShell
+      title="Log in"
+      subtitle={
+        <>
           Use a seeded account like <span className="font-mono">alice@example.com</span> /{' '}
           <span className="font-mono">Password123!</span>
-        </p>
-
-        {error ? (
-          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-900 dark:border-red-900/40 dark:bg-red-950/40 dark:text-red-200">
-            {error}
-          </div>
-        ) : null}
-
-        <div className="mt-6 grid gap-3 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-          <input
-            className="h-11 w-full rounded-xl border border-zinc-200 bg-white px-3 text-sm outline-none dark:border-zinc-800 dark:bg-zinc-950"
-            placeholder="Email"
-            value={form.email}
-            onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-          />
-          <input
-            className="h-11 w-full rounded-xl border border-zinc-200 bg-white px-3 text-sm outline-none dark:border-zinc-800 dark:bg-zinc-950"
-            placeholder="Password"
-            type="password"
-            value={form.password}
-            onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') void onSubmit()
-            }}
-          />
-
-          <button
-            className="h-11 rounded-xl bg-zinc-900 px-4 text-sm font-semibold text-white hover:bg-zinc-800 disabled:opacity-60 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-white"
-            onClick={() => void onSubmit()}
-            disabled={loading}
-          >
-            Log in
-          </button>
+        </>
+      }
+    >
+      {error ? (
+        <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-900 dark:border-red-900/40 dark:bg-red-950/40 dark:text-red-200">
+          {error}
         </div>
+      ) : null}
 
-        <p className="mt-6 text-sm text-zinc-600 dark:text-zinc-400">
-          No account?{' '}
-          <Link href="/signup" className="font-semibold text-zinc-950 dark:text-zinc-50">
-            Sign up
-          </Link>
-        </p>
+      <div className="grid gap-3">
+        <input
+          className="h-11 w-full rounded-2xl border border-zinc-200 bg-white px-3 text-sm outline-none dark:border-zinc-800 dark:bg-zinc-950"
+          placeholder="Email"
+          value={form.email}
+          onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
+        />
+        <input
+          className="h-11 w-full rounded-2xl border border-zinc-200 bg-white px-3 text-sm outline-none dark:border-zinc-800 dark:bg-zinc-950"
+          placeholder="Password"
+          type="password"
+          value={form.password}
+          onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') void onSubmit()
+          }}
+        />
+
+        <button
+          className="h-11 rounded-2xl bg-zinc-900 px-4 text-sm font-semibold text-white hover:bg-zinc-800 disabled:opacity-60 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-white"
+          onClick={() => void onSubmit()}
+          disabled={loading}
+        >
+          Log in
+        </button>
       </div>
-    </div>
+
+      <p className="mt-6 text-sm text-zinc-600 dark:text-zinc-400">
+        No account?{' '}
+        <Link href="/signup" className="font-semibold text-zinc-950 dark:text-zinc-50">
+          Sign up
+        </Link>
+      </p>
+    </AuthShell>
   )
 }
 

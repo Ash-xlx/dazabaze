@@ -35,6 +35,8 @@ struct IssueDb {
     title: String,
     description: String,
     status: String,
+    #[serde(rename = "assigneeId")]
+    assignee_id: Option<ObjectId>,
     #[serde(rename = "parentIssueId")]
     parent_issue_id: Option<ObjectId>,
 }
@@ -76,12 +78,13 @@ async fn main() -> anyhow::Result<()> {
 
     // Organizations (required collection) - 5 docs
     let owner_id = user_docs[0].id;
+    let all_user_ids: Vec<ObjectId> = user_docs.iter().map(|u| u.id).collect();
     let org_docs = vec![
-        OrganizationDb { id: ObjectId::new(), name: "Acme".into(), key: "ACME".into(), owner_id, member_ids: vec![owner_id] },
-        OrganizationDb { id: ObjectId::new(), name: "Orbit".into(), key: "ORBT".into(), owner_id, member_ids: vec![owner_id] },
-        OrganizationDb { id: ObjectId::new(), name: "Nimbus".into(), key: "NIMB".into(), owner_id, member_ids: vec![owner_id] },
-        OrganizationDb { id: ObjectId::new(), name: "Kite".into(), key: "KITE".into(), owner_id, member_ids: vec![owner_id] },
-        OrganizationDb { id: ObjectId::new(), name: "Vertex".into(), key: "VRTX".into(), owner_id, member_ids: vec![owner_id] },
+        OrganizationDb { id: ObjectId::new(), name: "Acme".into(), key: "ACME".into(), owner_id, member_ids: all_user_ids.clone() },
+        OrganizationDb { id: ObjectId::new(), name: "Orbit".into(), key: "ORBT".into(), owner_id, member_ids: all_user_ids.clone() },
+        OrganizationDb { id: ObjectId::new(), name: "Nimbus".into(), key: "NIMB".into(), owner_id, member_ids: all_user_ids.clone() },
+        OrganizationDb { id: ObjectId::new(), name: "Kite".into(), key: "KITE".into(), owner_id, member_ids: all_user_ids.clone() },
+        OrganizationDb { id: ObjectId::new(), name: "Vertex".into(), key: "VRTX".into(), owner_id, member_ids: all_user_ids.clone() },
     ];
     organizations.insert_many(&org_docs).await?;
 
@@ -93,12 +96,12 @@ async fn main() -> anyhow::Result<()> {
     let parent2 = ObjectId::new();
 
     let issue_docs = vec![
-        IssueDb { id: parent1, organization_id: org0, title: "Set up project".into(), description: "Initialize repo, CI, and basic structure.".into(), status: "todo".into(), parent_issue_id: None },
-        IssueDb { id: ObjectId::new(), organization_id: org0, title: "Create login screen".into(), description: "Add login UI and token storage.".into(), status: "in_progress".into(), parent_issue_id: Some(parent1) },
-        IssueDb { id: ObjectId::new(), organization_id: org0, title: "Create organization flow".into(), description: "Allow creating org and switching between orgs.".into(), status: "todo".into(), parent_issue_id: Some(parent1) },
-        IssueDb { id: parent2, organization_id: org1, title: "Issue search".into(), description: "Add MongoDB text index search on issues.".into(), status: "todo".into(), parent_issue_id: None },
-        IssueDb { id: ObjectId::new(), organization_id: org1, title: "Sub-issues".into(), description: "Support parentIssueId and show children in Details.".into(), status: "todo".into(), parent_issue_id: Some(parent2) },
-        IssueDb { id: ObjectId::new(), organization_id: org1, title: "Polish UI".into(), description: "Make it feel like Linear: fast, clean, keyboard-friendly.".into(), status: "backlog".into(), parent_issue_id: None },
+        IssueDb { id: parent1, organization_id: org0, title: "Set up project".into(), description: "Initialize repo, CI, and basic structure.".into(), status: "todo".into(), assignee_id: Some(user_docs[0].id), parent_issue_id: None },
+        IssueDb { id: ObjectId::new(), organization_id: org0, title: "Create login screen".into(), description: "Add login UI and token storage.".into(), status: "in_progress".into(), assignee_id: Some(user_docs[1].id), parent_issue_id: Some(parent1) },
+        IssueDb { id: ObjectId::new(), organization_id: org0, title: "Create organization flow".into(), description: "Allow creating org and switching between orgs.".into(), status: "todo".into(), assignee_id: None, parent_issue_id: Some(parent1) },
+        IssueDb { id: parent2, organization_id: org1, title: "Issue search".into(), description: "Add MongoDB text index search on issues.".into(), status: "todo".into(), assignee_id: Some(user_docs[2].id), parent_issue_id: None },
+        IssueDb { id: ObjectId::new(), organization_id: org1, title: "Sub-issues".into(), description: "Support parentIssueId and show children in Details.".into(), status: "todo".into(), assignee_id: None, parent_issue_id: Some(parent2) },
+        IssueDb { id: ObjectId::new(), organization_id: org1, title: "Polish UI".into(), description: "Make it feel like Linear: fast, clean, keyboard-friendly.".into(), status: "in_review".into(), assignee_id: Some(user_docs[3].id), parent_issue_id: None },
     ];
     issues.insert_many(&issue_docs).await?;
 
