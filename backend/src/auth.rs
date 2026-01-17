@@ -5,8 +5,7 @@ use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation}
 use mongodb::bson::oid::ObjectId;
 use serde::{Deserialize, Serialize};
 
-/// Minimal JWT auth utilities.
-///
+
 /// - Backend issues a JWT on login/signup
 /// - Frontend stores the token and sends `Authorization: Bearer <token>`
 /// - API endpoints verify the token and extract the user id (`sub`)
@@ -31,8 +30,7 @@ pub fn issue_token(user_id: ObjectId, jwt_secret: &str) -> anyhow::Result<String
     )?)
 }
 
-/// Extracts user id from `Authorization: Bearer ...`.
-///
+/// Extracts user id from `Authorization
 /// Returns `HttpResponse::Unauthorized()` on failure so route handlers can
 /// `return e;` while still returning `impl Responder`.
 pub fn require_user_id(req: &HttpRequest, jwt_secret: &str) -> Result<ObjectId, HttpResponse> {

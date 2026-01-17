@@ -1,13 +1,11 @@
 use mongodb::bson::oid::ObjectId;
 use serde::{Deserialize, Serialize};
 
-// Data models for MongoDB + API DTOs.
-//
-// Semester rubric mapping:
-// - Collections: `organizations`, `issues` (plus `users` for login)
-// - Common field: `issues.organizationId` references `organizations._id`
-// - Text index: created on `issues.title` + `issues.description` (see `bin/seed.rs`)
-
+/// Data models for MongoDB + API DTOs.
+///
+/// - Collections: `organizations`, `issues` (plus `users` for login)
+/// - Common field: `issues.organizationId` references `organizations._id`
+/// - Text index: created on `issues.title` + `issues.description` (see `bin/seed.rs`)
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserDb {
     #[serde(rename = "_id")]
